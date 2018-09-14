@@ -40,7 +40,7 @@ class SolrcloudCheck(AgentCheck):
 
             self.cores[c]["stat"]["solrcloud.sizeInBytes"] = jstat1["status"][c]["index"]["sizeInBytes"]
 
-            self.cores[c]["tag"]["name"] = jstat1["status"][c]["name"]
+            self.cores[c]["tag"]["corename"] = jstat1["status"][c]["name"]
             #newer solr
             if "cloud" in jstat1["status"][c]:
                 self.cores[c]["tag"]["collection"] = jstat1["status"][c]["cloud"]["collection"]
@@ -67,7 +67,7 @@ class SolrcloudCheck(AgentCheck):
                                     for a in jtag2["cluster"]["collections"][col]["aliases"]:
                                         self.cores[c]["tag"]["alias:"+a] = None
 
-                            if jtag2["cluster"]["collections"][col]["shards"][sh]["replicas"][repl]["core"] == core[1]["tag"]["name"]:
+                            if jtag2["cluster"]["collections"][col]["shards"][sh]["replicas"][repl]["core"] == core[1]["tag"]["corename"]:
                                 if jtag2["cluster"]["collections"][col]["shards"][sh]["replicas"][repl]["state"] == "active":
                                     self.cores[c]["stat"]["solrcloud.cloudstatus"] = 1
                                 else:
